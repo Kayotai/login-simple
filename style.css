@@ -1,0 +1,160 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    /* var */
+    --color1: #23242a;
+    --color2: #1c1c1c;
+    --color3: #222;
+    --color4: rgb(77, 76, 76);
+    --color5: rgb(55, 134, 24);
+}
+
+* {
+    /* Reset */
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    font-family: "Noto Sans Display", sans-serif;
+}
+
+body {
+    
+    /* center */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+    /* background */
+    background-color: var(--color2);
+
+}
+
+.container {
+
+    /* config */
+    position: relative;
+
+    /* height e width */
+    width: 380px;
+    height: 420px;
+    
+
+    /* decoration and colors */
+    background-color: var(--color2);
+    border-radius: 10px;
+    border: 1px solid var(--color3);
+}
+
+form {
+
+    /* config */
+    position: absolute;
+
+    /* color and decoration */
+    background-color: var(--color3);
+    border-radius: 10px;
+    padding: 50px 40px; /* center */
+    z-index: 2;  /* priority two */
+    
+    /* Display */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    
+
+}
+
+
+.container form h1 {
+    color: var(--color4);
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+
+.inputbox {
+    position: relative;
+    width: 300px;
+    margin-top: 25px;
+}
+
+.inputbox input {
+    /* config */
+    position: relative;
+
+    /* decoration and color and background */
+    width: 100%;
+    padding: 25px 10px 10px;
+    background: transparent;
+    outline: none;
+    border: none;
+    box-shadow: none;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    transition: 0.7s;
+}
+
+form > .inputbox > input::placeholder {
+    transition: 0.7s;
+    color: var(--color5);
+}
+
+.container form .inputbox input:valid::placeholder,
+.container form .inputbox input:focus::placeholder
+{
+    transform: translateY(-25px);
+    font-size: 1.05em;
+}
+
+.inputbox > i {
+
+    /* position and height */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+
+    /* details and decoration */
+    border-radius: 4px;
+    background: rgb(77, 76, 76);
+    pointer-events: none;
+}
+
+form > button {
+    border: none;
+    border-radius: 3px;
+    margin-top: 20px;
+    height: 30px;
+    color: var(--color4);
+    background-color: var(--color5);
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+    width: 100%;
+}
+
+form > p {
+    margin-top: 10px;
+    font-size: 1.02em;
+    color: var(--color4);
+}
+
+form > p > a {
+    color: var(--color5);
+    cursor: pointer;
+} 
+
+
+
+
+
+
+
+
+
+
+
