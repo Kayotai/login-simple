@@ -3,6 +3,8 @@ const path = require('path'); //vai ajudar a concertar os caminhos de arquivos d
 const users = require('./data'); //importando a lista de usuarios
 
 
-const app = express();
+const app = express(); //iniciando a funcao
 
-const PORT = 3000;
+const PORT = 3000; //definindo uma porta
+
+app.use(express.static(path.join(__dirname, "..frontend")));
