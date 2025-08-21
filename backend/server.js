@@ -10,3 +10,4 @@ const PORT = 3000; //definindo uma porta
 app.use(express.urlencoded({extended: true})); //Pegando as informações do formulario e deixando de ma forma que o código entenda
 
 app.use(express.static(path.join(__dirname, "..frontend"))); //Dando a requisição para quando for solicitado a página estatica
+
