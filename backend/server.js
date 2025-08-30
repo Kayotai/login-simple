@@ -20,20 +20,20 @@ app.post('/login', (req, res) => { //quando uma requisição do tipo post chegar
         res.send
         (`
             <script>
-                alert('Login Sucess');
+                alert('Login Sucess yep');
                 window.location.href = '/';
             </script>
-        `)
+        `);
     }
     else
     {
         res.send
         (`
             <script>
-                alert('Login Sucess');
+                alert('Login Error');
                 window.location.href = '/';
             </script>
-        `)
+        `);
     }
 });
 
