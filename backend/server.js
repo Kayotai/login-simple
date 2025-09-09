@@ -1,46 +1,64 @@
+require('dotenv').config();
 const express = require('express'); //vai ajudar a cuidar da parte do servidor
 const path = require('path'); //vai ajudar a concertar os caminhos de arquivos de acordo com o modelo da máquina
-const users = require('./data'); //importando a lista de usuarios
+const User = require('./user'); //importando a lista de usuarios
 const mongoose = require('mongoose'); //importando mongoose
 const app = express(); //iniciando a funcao
 
-const MONGODB_URI = 'mongodb+srv://troglodita9090:<db_password>@cluster0.o3y6qtb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const PORT = 3000; //definindo uma porta
-
-//#region Application(app)
-    app.use(express.urlencoded({extended: true})); //Pegando as informações do formulario e deixando de forma que o código entenda
-    app.use(express.static(path.join(__dirname, "../frontend"))); //Dando a requisição para quando for solicitado a página estatica
-    app.post('/login', (req, res) => { //quando uma requisição do tipo post chegar com a url login...
-        const {email, password} = req.body; //...eu armazeno as informações do formulario de login nas variaveis de mesmo nome
-        const user = users.find(u => u.email === email && u.password === password); //Dentro de uma variavel para armazenar a resposta, verifico se existe algum email e senha dentro de users que seja igual ao que foi enviado pelo form.
-
-        if (user) //Se existir um user isso ocorre
-        {
-            res.send //Envio a resposta 
-            (`
-                <script>
-                    alert('Login Sucess yep');
-                    window.location.href = '/';
-                </script>
-            `);
-        }
-        else //Do contrario..
-        {
-            res.send
-            (`
-                <script>
-                    alert('Login Error');
-                    window.location.href = '/';
-                </script>
-            `);
-        }
-    });
-    app.listen(PORT, () => {
-        console.log(`Servidor rodando em http://localhost:${PORT}`);
-    }); //Iniciando a porta
-//#endregion
 
 mongoose.connect(MONGODB_URI)
     .then(() => console.log('Connected'))
     .catch(err => console.error('Error'));
+
+//#region Application(app)
+    app.use(express.urlencoded({extended: true})); //Pegando as informações do formulario e deixando de forma que o código entenda
+    app.use(express.static(path.join(__dirname, "../frontend"))); //Dando a requisição para quando for solicitado a página estatica
+    
+    app.post('/new', async (req, res) => { //Se uma requisição new chegar, informo que vai ser uma função que demanda tempo...
+        
+        try //tentativa...
+        {
+            const {email, password} = req.body; //Pego as informações vindas da requisição do front
+            const newUser = new User({email, password}); //Crio um novo cadastro
+            await newUser.save(); //Pausa da execução aqui
+            res.send('Usuário cadastrado com sucesso');
+        }
+        catch (err) //Se der erro...
+        {
+            console.error(err);
+            res.status(500).send('Erro ao cadastrar usuário');
+        }
+    });
+    
+    app.post('/login', async (req, res) => { //Se uma requisição de formulario (/login) chegar, eu executo uma função dizendo que elq levqrá tempo
+
+        try //Tentativa
+        {
+            const {emai, password} = req.body; //pego as informações do front
+            const user = await User.findOne({email}); //digo para esperar aqui enquanto é verificado se o email existe no bancode dados
+            if (!user) //Se o usuario não for encontrado
+            {
+                return res.status(400).send('Email incrreto'); //retorno um erro
+            };
+
+            if (user.password !== password)
+            {
+                return res.status(400).send('Senha incorreta')
+            };
+
+            res.send('Login bem-sucedido');
+        }
+        catch (err)
+        {
+            console.error(err);
+            res.status(500).send('Erro no servidor.');
+        };
+    })
+    
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando em http://localhost:${PORT}`);
+    }); //Iniciando a porta
+//#endregion
