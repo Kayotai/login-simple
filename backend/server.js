@@ -5,7 +5,7 @@ const User = require('./user'); //importando a lista de usuarios
 const mongoose = require('mongoose'); //importando mongoose
 const app = express(); //iniciando a funcao
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGO_URI;
 
 const PORT = 3000; //definindo uma porta
 
