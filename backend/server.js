@@ -1,22 +1,24 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express'); //vai ajudar a cuidar da parte do servidor
-const path = require('path'); //vai ajudar a concertar os caminhos de arquivos de acordo com o modelo da máquina
-const User = require('./user'); //importando a lista de usuarios
-const mongoose = require('mongoose'); //importando mongoose
-const bcrypt = require('bcrypt'); //codificação das senhas
+const authRoutes = require('./routes/authRoutes'); //preparando a variavel para usar o authRoutes
+const connectDB = require('./config/db');
 
-const app = express(); //iniciando a funcao
 
-const MONGODB_URI = process.env.MONGO_URI;
+const app = express(); //iniciando o express para cuidar das requisicoes do servidor
+app.use(express.static(path.join(__dirname, '../frontend')));
 
-const PORT = 3000; //definindo uma porta
+connectDB();
 
-mongoose.connect(MONGODB_URI)
-    .then(() => console.log('Connected'))
-    .catch(err => console.error('Error'));
+app.use(express.json()); //Se chegar um arquivo json, deixo legivel
+app.use(express.urlencoded({ extended: true}));
+app.use('/', authRoutes); //se chegar uma requisição, envio para o authRoutes, responsavel por lidar com elas
 
-//#region Application(app)
+app.listen(3000, () => console.log('Servidor rodando em http://localhost:3000'));
+/*
+ //#region Application(app)
     app.use(express.urlencoded({extended: true})); //Pegando as informações do formulario e deixando de forma que o código entenda
+    app.use(express.json());
     app.use(express.static(path.join(__dirname, "../frontend"))); //Dando a requisição para quando for solicitado a página estatica
     
     app.post('/signup', async (req, res) => { //Se uma requisição new chegar, informo que vai ser uma função que demanda tempo...
@@ -25,6 +27,15 @@ mongoose.connect(MONGODB_URI)
         {
             const {email, password} = req.body; //Pego as informações vindas da requisição do front
             
+        if (password.length < 8) {
+              return res.status(400).send('Senha muito curta');
+        };
+
+        const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+        if (!emailRegex.test(email)) {
+            return res.status(400).send('Email inválido');
+        };
+
             // Adição da validação de back-end
             if (!email || !password) 
             {
@@ -41,6 +52,10 @@ mongoose.connect(MONGODB_URI)
         catch (err) //Se der erro...
         {
             console.error(err);
+            if (err.code === 11000) 
+            {
+                return res.status(400).send('Este e-mail já está cadastrado.');
+            };
             res.status(500).send('Erro ao cadastrar usuário');
         }
     });
@@ -49,7 +64,7 @@ mongoose.connect(MONGODB_URI)
 
         try //Tentativa
         {
-            const {emai, password} = req.body; //pego as informações do front
+            const {email, password} = req.body; //pego as informações do front
             
              // Adição da validação de back-end
             if (!email || !password) 
@@ -83,3 +98,4 @@ mongoose.connect(MONGODB_URI)
         console.log(`Servidor rodando em http://localhost:${PORT}`);
     }); //Iniciando a porta
 //#endregion
+*/
