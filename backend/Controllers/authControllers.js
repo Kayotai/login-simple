@@ -6,7 +6,9 @@ exports.signup = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).send('Email e senha são obrigatórios.');
+      return res.redirect(
+        `/newAccount.html?msg=${encodeURIComponent("Email and password are required!")}`
+      );
     }
 
     const saltRounds = 10;
@@ -15,12 +17,18 @@ exports.signup = async (req, res) => {
     const newUser = new User({ email, password: hashedPassword });
     await newUser.save();
 
-    res.send('Usuário cadastrado com sucesso!');
+    res.redirect(
+      `/index.html?msg=${encodeURIComponent("Registration successful! Please log in.")}`
+    );
   } catch (err) {
     if (err.code === 11000) {
-      return res.status(400).send('Este e-mail já está cadastrado.');
+      return res.redirect(
+        `/index.html?msg=${encodeURIComponent("This email is already registered.")}`
+      );
     }
-    res.status(500).send('Erro ao cadastrar usuário.');
+    res.redirect(
+      `/newAccount.html?msg=${encodeURIComponent("Error while registering user. Try again.")}`
+    );
   }
 };
 
@@ -29,13 +37,25 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).send('Usuário não encontrado.');
+    if (!user) {
+      return res.redirect(
+        `/index.html?msg=${encodeURIComponent("User not found.")}`
+      );
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).send('Senha inválida.');
+    if (!isMatch) {
+      return res.redirect(
+        `/index.html?msg=${encodeURIComponent("Invalid password.")}`
+      );
+    }
 
-    res.send('Login bem-sucedido!');
+    res.redirect(
+      `/index.html?msg=${encodeURIComponent("Login successful!")}`
+    );
   } catch (err) {
-    res.status(500).send('Erro ao fazer login.');
+    res.redirect(
+      `/index.html?msg=${encodeURIComponent("Server error while logging in. Try again.")}`
+    );
   }
 };

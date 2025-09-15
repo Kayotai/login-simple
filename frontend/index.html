@@ -29,5 +29,11 @@
         </form>
 
     </main>
+    <script>
+        const params = new URLSearchParams(window.location.search); //procurando parametros na url e colocando na variavel
+        const msg = params.get('msg'); //pegando o parametro coletado
+        if (msg) alert(msg); //mostrando o alert
+    </script>
+
 </body>
 </html>

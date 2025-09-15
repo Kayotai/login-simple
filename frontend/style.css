@@ -142,11 +142,10 @@ form > p {
     font-size: 1.02em;
     color: var(--color4);
 }
-
-form > p > a {
+a {
     color: var(--color5);
     cursor: pointer;
-} 
+}
 
 
 

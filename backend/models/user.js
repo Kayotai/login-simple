@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); //colocando mongoose em uma variavel
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({ 
     email: {
         type: String,
         required: true, //obrigatório
