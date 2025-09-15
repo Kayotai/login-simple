@@ -1,8 +1,12 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const connectDB = require("../db");
 
 exports.signup = async (req, res) => {
   try {
+
+    await connectDB();
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -34,6 +38,8 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+
+    await connectDB();
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
