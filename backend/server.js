@@ -8,7 +8,9 @@ const connectDB = require('./config/db');
 const app = express(); //iniciando o express para cuidar das requisicoes do servidor
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-connectDB();
+connectDB(process.env.MONGO_URI)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Error connecting to MongoDB:', err));
 
 app.use(express.json()); //Se chegar um arquivo json, deixo legivel
 app.use(express.urlencoded({ extended: true}));
