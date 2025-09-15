@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const connectDB = require('../db');
+const connectDB = require('../config/db');
 
 exports.signup = async (req, res) => {
   try {
