@@ -22,15 +22,18 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  try {
-    
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) return res.redirect(`/index.html?msg=${encodeURIComponent("User not found.")}`);
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.redirect(`/index.html?msg=${encodeURIComponent("Invalid password.")}`);
-    res.redirect(`/index.html?msg=${encodeURIComponent("Login successful!")}`);
-  } catch (err) {
+  try 
+  {  
+      const { email, password } = req.body;
+      
+      const user = await User.findOne({ email });
+      if (!user) return res.redirect(`/index.html?msg=${encodeURIComponent("User not found.")}`);
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) return res.redirect(`/index.html?msg=${encodeURIComponent("Invalid password.")}`);
+      res.redirect(`/index.html?msg=${encodeURIComponent("Login successful!")}`);
+  } 
+  catch (err) 
+  {
     res.redirect(`/index.html?msg=${encodeURIComponent("Server error while logging in. Try again.")}`);
   }
 };
