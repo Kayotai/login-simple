@@ -96,6 +96,7 @@ form {
     font-size: 1em;
     letter-spacing: 0.05em;
     transition: 0.7s;
+    color: white;
 }
 
 form > .inputbox > input::placeholder {
