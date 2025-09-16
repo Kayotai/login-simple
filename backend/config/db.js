@@ -1,13 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 let cached = global.mongoose;
-if (!cached) cached = global.mongoose = { conn: null };
+if (!cached) cached = global.mongoose = { conn: null, promise: null };
 
 async function connectDB(uri) {
   if (cached.conn) return cached.conn;
-
-  const opts = { bufferCommands: false };
-  cached.conn = await mongoose.connect(uri, opts);
+  if (!cached.promise) {
+    const opts = { bufferCommands: false };
+    cached.promise = mongoose.connect(uri, opts).then((mongoose) => {
+      return mongoose;
+    });
+  }
+  cached.conn = await cached.promise;
   return cached.conn;
 }
 
