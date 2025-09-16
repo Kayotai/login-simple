@@ -1,21 +1,21 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
-const connectDB = require("../config/db"); // ajuste o path se necessário
+const connectDB = require("../config/db"); 
 
 exports.signup = async (req, res) => {
   try {
-    await connectDB(); // <---- garante conexão antes de qualquer query
+    await connectDB(); //  garante que tenho alguma conexão antes
 
     const { email, password } = req.body;
     if (!email || !password) {
       return res.redirect(`/newAccount.html?msg=${encodeURIComponent("Email and password are required!")}`);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ email, password: hashedPassword });
-    await newUser.save();
+    const hashedPassword = await bcrypt.hash(password, 10); //codificando essa bomba 10x
+    const newUser = new User({ email, password: hashedPassword }); //novo usuario com a senha criptografada
+    await newUser.save(); //salvando a bomba
 
-    return res.redirect(`/index.html?msg=${encodeURIComponent("Registration successful! Please log in.")}`);
+    return res.redirect(`/index.html?msg=${encodeURIComponent("Registration successful! Please log in.")}`); //voltando
   } catch (err) {
     if (err.code === 11000) {
       return res.redirect(`/index.html?msg=${encodeURIComponent("This email is already registered.")}`);
@@ -27,7 +27,7 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    await connectDB(); // <---- garante conexão antes de qualquer query
+    await connectDB(); // garante que tenho uma conexão antes
 
     const { email, password } = req.body;
     const user = await User.findOne({ email });

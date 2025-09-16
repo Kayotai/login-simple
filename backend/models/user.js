@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const connectDB = require("../config/db");
 
 
-const userSchema = new mongoose.Schema({
+//
+const userSchema = new mongoose.Schema({ //defino o que as informações de usuario devem ter
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true }
 });
 
-module.exports = mongoose.models.User || mongoose.model("User", userSchema);
+module.exports = mongoose.models.User || mongoose.model("User", userSchema); 
