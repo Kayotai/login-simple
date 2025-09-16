@@ -1,12 +1,14 @@
 const express = require("express");
 const path = require("path");
-const connectDB = require("./db");
 const authRoutes = require("./routes/authRoutes");
+const connectDB = require("./config/db");
 
 const app = express();
 
-// Conecta ao banco logo no início
-connectDB();
+// Conectar ao MongoDB assim que o servidor iniciar
+connectDB().catch((err) => {
+  console.error("Erro ao conectar no MongoDB:", err);
+});
 
 app.use(express.static(path.join(__dirname, "../frontend")));
 app.use(express.json());
