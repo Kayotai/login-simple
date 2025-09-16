@@ -42,7 +42,10 @@ exports.login = async (req, res) => {
     }
 
     res.redirect(`/index.html?msg=${encodeURIComponent("Login successful!")}`);
-  } catch (err) {
-    res.redirect(`/index.html?msg=${encodeURIComponent("Server error while logging in. Try again.")}`);
-  }
+  } // exemplo dentro do catch do login
+catch (err) {
+  console.error('[DEBUG] authController.login error:', err && err.stack ? err.stack : err);
+  return res.redirect(`/index.html?msg=${encodeURIComponent("Server error while logging in. Try again.")}`);
+}
+
 };
