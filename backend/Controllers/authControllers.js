@@ -1,9 +1,13 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const connectDB = require("../config/db");
 
 exports.signup = async (req, res) => {
   try {
+    await connectDB();
+
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res.redirect(`/newAccount.html?msg=${encodeURIComponent("Email and password are required!")}`);
     }
@@ -23,8 +27,11 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+    await connectDB();
+
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.redirect(`/index.html?msg=${encodeURIComponent("User not found.")}`);
     }
