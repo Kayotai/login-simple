@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 const path = require('path');
 const express = require('express'); //vai ajudar a cuidar da parte do servidor
 const authRoutes = require('./routes/authRoutes'); //preparando a variavel para usar o authRoutes
@@ -8,7 +8,7 @@ const connectDB = require('./config/db');
 const app = express(); //iniciando o express para cuidar das requisicoes do servidor
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-connectDB(process.env.MONGO_URI)
+connectDB(MONGO_URI)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('Error connecting to MongoDB:', err));
 
